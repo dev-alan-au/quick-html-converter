@@ -1,0 +1,17 @@
+<html>
+  <head></head>
+  <body>
+    <h1>Upload HTML to convert to DOCX</h1>
+    <form method="POST" action="/api/convert-to-docx" enctype="multipart/form-data">
+      <div>
+        <label for="fileName">File name</label>
+        <input id="fileName" type="text" name="fileName" />
+      </div>
+      <div>
+        <label for="htmlFile">File to convert</label>
+        <input id="htmlFile" type="file" name="htmlFile" accept=".html" required />
+      </div>
+      <button type="submit">Convert</button>
+    </form>
+  </body>
+</html>
