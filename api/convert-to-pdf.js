@@ -29,9 +29,14 @@ export default async function handler(req, res) {
   const html = req.file.buffer.toString("utf-8");
 
   const browser = await puppeteer.launch({
-    args: chromium.args,
+    args: [
+      ...chromium.args,
+      "--hide-scrollbars",
+      "--disable-web-security"
+    ],
+    defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath(),
-    headless: chromium.headless,
+    headless: true,
   });
 
   const page = await browser.newPage();
@@ -46,7 +51,10 @@ export default async function handler(req, res) {
   await browser.close();
 
   res.setHeader("Content-Type", "application/pdf");
-  res.setHeader("Content-Disposition", "attachment; filename=output.pdf");
+  res.setHeader(
+    "Content-Disposition",
+    'attachment; filename="output.pdf"'
+  );
 
-  res.send(pdfBuffer);
+  res.status(200).end(pdfBuffer);
 }
