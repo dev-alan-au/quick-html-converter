@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
     <form method="POST" action="/convert-to-docx" enctype="multipart/form-data">
       <div>
         <label for="fileName">File name</label>
-        <input id="fileName" type="text" name="fileName" />
+        <input autocomplete="off" id="fileName" type="text" name="fileName" />
       </div>
       <div>
         <label for="htmlFile">File to convert</label>
@@ -41,11 +41,16 @@ app.post("/convert-to-docx", upload.single("htmlFile"), async (req, res) => {
       return res.status(400).send("No file uploaded.");
     }
 
-    const fileName = req.body.fileName ?? 'output';
+    const fileName = req.body.fileName || 'output';
 
     const htmlContent = req.file.buffer.toString("utf-8");
 
-    const docxBuffer = await htmlToDocx(htmlContent);
+    const docxBuffer = await htmlToDocx(htmlContent, null, {
+      font: 'Arial',
+      fontSize: 24,
+      header: false,
+      footer: false,
+    });
 
     res.set({
       "Content-Type":

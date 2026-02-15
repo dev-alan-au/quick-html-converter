@@ -27,7 +27,12 @@ export default async function handler(req, res) {
 
   const htmlContent = req.file.buffer.toString("utf-8");
 
-  const docxBuffer = await htmlToDocx(htmlContent);
+  const docxBuffer = await htmlToDocx(htmlContent, null, {
+    font: 'Arial',
+    fontSize: 24,
+    header: false,
+    footer: false,
+  })
 
   res.setHeader(
     "Content-Type",
